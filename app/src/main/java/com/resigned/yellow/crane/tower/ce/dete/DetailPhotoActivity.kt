@@ -102,7 +102,7 @@ class DetailPhotoActivity : AppCompatActivity(), DetailPhotoAdapter.OnItemClickL
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 put(
                     MediaStore.Images.Media.RELATIVE_PATH,
-                    Environment.DIRECTORY_PICTURES + File.separator + "TenWallPaper"
+                    Environment.DIRECTORY_PICTURES + File.separator + "ElevenWall"
                 )
             }
         }
