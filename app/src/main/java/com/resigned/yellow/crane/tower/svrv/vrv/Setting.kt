@@ -27,9 +27,8 @@ class Setting  : AppCompatActivity() {
         }
         binding.btnPP.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW)
-            //TODO
             intent.data =
-                android.net.Uri.parse("https://www.google.com")
+                android.net.Uri.parse("https://sites.google.com/view/fantastic-w-wallpaper/home")
             startActivity(intent)
         }
     }
