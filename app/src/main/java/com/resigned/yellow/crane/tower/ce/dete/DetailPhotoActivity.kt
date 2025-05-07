@@ -80,6 +80,14 @@ class DetailPhotoActivity : AppCompatActivity(), DetailPhotoAdapter.OnItemClickL
 
 
     private fun downloadWallpaper() {
+        if (imageUri == null) {
+            Toast.makeText(
+                this@DetailPhotoActivity,
+                "Please select a photo",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
         // 获取需要保存的布局视图
         val view = binding.llFinish
         // 创建与布局尺寸相同的 Bitmap
