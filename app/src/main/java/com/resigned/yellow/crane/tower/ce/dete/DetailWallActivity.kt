@@ -132,12 +132,16 @@ class DetailWallActivity : AppCompatActivity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val contentValues = ContentValues().apply {
-                put(MediaStore.Images.Media.DISPLAY_NAME, "wallpaper_${System.currentTimeMillis()}.jpg")
+                put(
+                    MediaStore.Images.Media.DISPLAY_NAME,
+                    "wallpaper_${System.currentTimeMillis()}.jpg"
+                )
                 put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
                 put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
             }
 
-            val uri: Uri? = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+            val uri: Uri? =
+                contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
             uri?.let {
                 try {
                     val outputStream: OutputStream? = contentResolver.openOutputStream(it)
@@ -150,7 +154,8 @@ class DetailWallActivity : AppCompatActivity() {
                 }
             }
         } else {
-            val picturesDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+            val picturesDirectory =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
             val imageFile = File(picturesDirectory, "wallpaper_${System.currentTimeMillis()}.jpg")
 
             try {
@@ -170,23 +175,29 @@ class DetailWallActivity : AppCompatActivity() {
 
     private fun showPermissionDeniedDialog() {
         AlertDialog.Builder(this)
-            .setTitle("Permission Denied")
-            .setMessage("You need to grant storage permission to save the image.")
-            .setPositiveButton("OK") { dialog, _ ->
+            .setTitle("Permission denied")
+            .setMessage("Storage permissions are required to save pictures. Please enable storage permissions in the settings.")
+            .setPositiveButton("Go to Settings") { _, _ ->
+                openAppSettings()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
             }
             .show()
     }
+
+    private fun openAppSettings() {
+        val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        val uri = Uri.fromParts("package", packageName, null)
+        intent.data = uri
+        startActivity(intent)
+    }
+
     private fun checkPermission(): Boolean {
-        return if (ContextCompat.checkSelfPermission(
+        return ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            true
-        } else {
-            false
-        }
+            ) == PackageManager.PERMISSION_GRANTED || Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
     }
 
     private fun requestPermission() {
